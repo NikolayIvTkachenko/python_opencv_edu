@@ -8,6 +8,171 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import numpy as np
+#
+# image = np.array([
+#     [[255, 0, 0], [0, 255, 0], [0, 0, 255]],
+#     [[255, 255, 255], [127, 127, 127], [0, 0, 0]],
+#     [[0, 255, 255], [255, 0, 255], [255, 255, 0]]
+# ]).astype('uint8')
+
+# str="я уже сдавал"
+# w=input()
+# print(w)
+# sum=0
+# while str != w:
+#     sum=sum+int(w)
+#     w=input()
+#     print(w)
+# print(f"Мы собрали {sum} рублей!")
+#
+# str="я уже сдавал"
+# w=input()
+# print(w)
+# sum=0
+# while str != w:
+#     sum=sum+int(w)
+#     w=input()
+#     print(w)
+# print(f"Мы собрали {sum} рублей!")
+#
+# str="упор"
+# w=input()
+# while str != w:
+#     print(w)
+#     w=input()
+
+
+# value = input()
+# while value != "СТОП":
+#     print(value)
+#     value = input()
+#
+#
+# counter = 0
+# while counter < 10:
+#     print("гороскоп на сегодня хороший")
+#     counter += 1
+
+
+
+# cities = {'Москва': 'Россия', 'Минск': 'Беларусь', 'Нур-Султан': 'Казахстан'}
+# keys = cities.keys()
+# print(keys)  # Вывод: dict_keys(['Москва', 'Минск', 'Нур-Султан'])
+#
+#
+# cities = {'Москва': 'Россия', 'Минск': 'Беларусь', 'Нур-Султан': 'Казахстан'}
+# for key in cities.keys():
+#     print(key)
+# # Вывод:
+# # Москва
+# # Минск
+# # Нур-Султан
+#
+#
+# cities = {'Москва': 'Россия', 'Минск': 'Беларусь', 'Нур-Султан': 'Казахстан'}
+# cities_list = list(cities.keys())
+# for i in range(len(cities_list)):
+#     print(cities_list[i])
+# # Вывод:
+# # Москва
+# # Минск
+# # Нур-Султан
+#
+# cities = {'Москва': 'Россия', 'Минск': 'Беларусь', 'Нур-Султан': 'Казахстан'}
+# for value in cities.values():
+#     print(value)
+# # Вывод:
+# # Россия
+# # Беларусь
+# # Казахстан
+#
+#
+# cities = {'Москва': 'Россия', 'Минск': 'Беларусь', 'Нур-Султан': 'Казахстан'}
+# for key, value in cities.items():
+#     print(f"{key}: {value}")
+# # Вывод:
+# # Москва: Россия
+# # Минск: Беларусь
+# Нур-Султан: Казахстан
+
+
+
+# w=int(input())
+# h=int(input())
+# s=input()
+# for i in range(1, h+1):
+#     print(s*w)
+#
+#
+# n=int(input())
+# s=1
+# for i in range(1, n*2):
+#     if(i<n):
+#         print("*"*s)
+#         s=s+1
+#     elif i == n:
+#         print("*"*s)
+#     elif i > n:
+#         s=s-1
+#         print("*"*s)
+
+# n=int(input())
+# str=input()
+# for i in range(1,n+1):
+#     print(f"{i} - {str*i}")
+#
+#
+# n=int(input())
+# for i in range(2,10):
+#     print(f"{n} * {i} = {n*i}")
+
+# str=input()
+# n=int(input())
+# for _ in range(n):
+#     print(str)
+
+# for i in range(73,58,-2):
+#     print(i)
+
+# for i in range(7):
+#     print(i) #+
+
+# for i in range(21,42,3):
+#     print(i) #+
+
+# for i in range(85,78,-1):
+#     print(i) #+
+
+# for i in range(1,8):
+#     print(i) #+
+
+# for i in range(15,29,2):
+#     print(i) #+
+
+# for i in range(63,78,2):
+#     print(i)
+
+
 # import cv2
 # import numpy as np
 #
