@@ -91,3 +91,34 @@
 # image = np.where(image > 230, 255, image)
 
 
+# import cv2
+#
+# # Чтение изображения
+# image = cv2.imread('car.png')
+#
+# # Преобразование в градации серого
+# gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#
+# # Сохранение результата
+# cv2.imwrite('gray_image.jpg', gray_image)
+#
+# # Отображение результата
+# cv2.imshow('Gray Image', gray_image)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+
+import cv2
+
+image = cv2.imread('.venv/car.png')
+
+# Преобразование из BGR в HSV
+hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+import cv2
+
+
+image = cv2.imread('.venv/car.png')
+
+# Преобразование из HSV в BGR
+bgr_image = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2BGR)
