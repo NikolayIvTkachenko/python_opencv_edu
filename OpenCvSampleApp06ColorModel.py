@@ -525,3 +525,421 @@ while True:
         break
 
 cv2.destroyAllWindows()
+
+# Важно, что при изменении параметров яркости и контрастности нужно ограничивать
+# выход значений за пределы от 0 до 255 с помощью функции np.clip(image, 0, 255),
+# мы ее подробно разбирали в уроке по NumPy.
+#
+# Пример скрипта для регулировки яркости и контрастности методами NumPy:
+
+import cv2
+import numpy as np
+
+def adjust_brightness(image, brightness=0):
+    new_image = np.int16(image)
+    new_image = new_image + brightness
+    new_image = np.clip(new_image, 0, 255)
+    return np.uint8(new_image)
+
+def adjust_contrast(image, contrast=1.0):
+    new_image = np.int16(image)
+    new_image = new_image * contrast
+    new_image = np.clip(new_image, 0, 255)
+    return np.uint8(new_image)
+
+
+# Загрузка изображения
+image = cv2.imread('orig.png')
+
+# Изменение яркости
+bright_image = adjust_brightness(image, 100)
+dark_image = adjust_brightness(image, -100)
+
+# Сохранение результатов
+cv2.imwrite('bright_image.png', bright_image)
+cv2.imwrite('dark_image.png', dark_image)
+
+# Изменение контрастности
+high_contrast_image = adjust_contrast(image, 1.5)
+low_contrast_image = adjust_contrast(image, 0.5)
+
+# Сохранение результатов
+cv2.imwrite('high_contrast_image.png', high_contrast_image)
+cv2.imwrite('low_contrast_image.png', low_contrast_image)
+
+# зменение яркости и контрастности с использованием OpenCV
+# Методы OpenCV также предоставляют эффективные средства для регулировки яркости и контрастности изображений. Вот пример, как можно изменить эти параметры с помощью функций OpenCV:
+#
+# Изменение яркости и контрастности с использованием OpenCV
+# Изменение яркости и контрастности изображения можно также реализовать с использованием функций OpenCV. Для этого используется функция cv2.convertScaleAbs, которая позволяет масштабировать, смещать и обрезать значения пикселей.
+#
+# Пример скрипта для регулировки яркости и контрастности методами OpenCV:
+#
+# import cv2
+#
+# # Загрузка изображения
+# image = cv2.imread('orig.png')
+#
+# # Изменение яркости и контрастности
+# bright_image_opencv = cv2.convertScaleAbs(image, beta=100)
+# dark_image_opencv = cv2.convertScaleAbs(image, beta=-100)
+# high_contrast_image_opencv = cv2.convertScaleAbs(image, alpha=1.5)
+# low_contrast_image_opencv = cv2.convertScaleAbs(image, alpha=0.5)
+#
+# # Сохранение результатов
+# cv2.imwrite('bright_image_opencv.jpg', bright_image_opencv)
+# cv2.imwrite('dark_image_opencv.jpg', dark_image_opencv)
+# cv2.imwrite('high_contrast_image_opencv.jpg', high_contrast_image_opencv)
+# cv2.imwrite('low_contrast_image_opencv.jpg', low_contrast_image_opencv)
+# alpha (контрастность): Коэффициент, на который умножается каждое значение пикселя.
+# beta (яркость): Значение, которое добавляется к каждому пикселю после умножения.
+# Функция cv2.convertScaleAbs выполняет эти операции и возвращает обрезанное изображение в диапазоне от 0 до 255.
+# Таким образом, используя методы как NumPy, так и OpenCV, мы можем эффективно регулировать яркость и контрастность изображений, улучшая их качество и подготовку для дальнейшего анализа.
+
+
+# Гистограмма изображения
+# Чтобы лучше понять, как изменение яркости и контрастности влияет на изображение, полезно рассмотреть
+# гистограмму изображения. Она показывает распределение значений яркости на изображении.
+# Это график, отображающий количество пикселей для каждого уровня яркости.
+#
+# Чтобы разобраться рассмотрим 3 изображения и их гистограммы при изменении яркости. Обратите
+# внимание, что гистограмма строится для изображения в оттенках серого. Для этого при чтении, в
+# функции imread() указывается параметр cv2.IMREAD_GRAYSCALE
+
+# import cv2
+# import numpy as np
+# from matplotlib import pyplot as plt
+#
+# # Загрузка изображения
+# image = cv2.imread('bright_image.png', cv2.IMREAD_GRAYSCALE)
+#
+# # Вычисление гистограммы
+# hist = cv2.calcHist([image], [0], None, [256], [0, 256])
+#
+# # Отображение гистограммы
+# plt.figure()
+# plt.title("Гистограмма яркости")
+# plt.xlabel("Яркость")
+# plt.ylabel("Количество пикселей")
+# plt.plot(hist)
+# plt.xlim([0, 256])
+# plt.savefig('bright_hist.png')
+# plt.show()
+
+
+# Работа с перетемненными и пересвеченными изображениями
+# Перетемненные и пересвеченные изображения представляют собой серьезную проблему в областях, связанных
+# с компьютерным зрением и автоматической обработкой изображений. Эти дефекты могут привести к
+# потере важной информации и усложнить дальнейшую обработку, анализ и распознавание объектов на изображениях.
+# Коррекция таких изображений является ключевым шагом для обеспечения точности и надежности в задачах компьютерного зрения.
+#
+# Для решения этой проблемы используются различные методы анализа и коррекции изображений, такие как анализ
+# гистограмм, коррекция яркости и контрастности с помощью OpenCV, а также современные подходы, например,
+# EnlightenGAN. В этом материале мы рассмотрим, как распознавать перетемненные и пересвеченные изображения,
+# а также методы их коррекции с использованием как традиционных, так и современных инструментов.
+#
+# Распознавание перетемненного, нормального и пересвеченного изображения
+# Гистограмма изображения предоставляет информацию о распределении значений яркости пикселей. На основании
+# анализа гистограммы можно классифицировать изображение как темное, нормальное или пересвеченное.
+#
+# Анализ гистограммы для классификации изображения
+# Для начала, создадим себе сложности! Возьмем любое изображение (фото) и с помощью предложенного ниже скрипта
+# создадим темные и светлые изображения.
+
+# import cv2
+# import numpy as np
+# from matplotlib import pyplot as plt
+#
+#
+# def plot_histogram(image, title, filename):
+#     # Преобразование изображения в оттенки серого
+#     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#
+#     # Вычисление гистограммы
+#     hist = cv2.calcHist([gray_image], [0], None, [256], [0, 256])
+#
+#     # Построение гистограммы
+#     plt.figure()
+#     plt.title(title)
+#     plt.xlabel("Яркость")
+#     plt.ylabel("Количество пикселей")
+#     plt.plot(hist)
+#     plt.xlim([0, 256])
+#
+#     # Сохранение гистограммы
+#     plt.savefig(filename)
+#     plt.close()
+#
+#
+# def create_image_with_histogram(image, title, image_filename, hist_filename, combined_filename):
+#     # Сохранение оригинального изображения
+#     cv2.imwrite(image_filename, image)
+#
+#     # Построение и сохранение гистограммы
+#     plot_histogram(image, title, hist_filename)
+#
+#     # Чтение гистограммы как изображения
+#     hist_image = cv2.imread(hist_filename)
+#
+#     # Изменение размеров гистограммы для совпадения с размером изображения
+#     hist_image = cv2.resize(hist_image, (image.shape[1], image.shape[0]))
+#
+#     # Склеивание изображения с гистограммой
+#     combined_image = np.hstack((image, hist_image))
+#
+#     # Сохранение итогового изображения
+#     cv2.imwrite(combined_filename, combined_image)
+#
+#
+# # Загрузка изображения
+# image = cv2.imread('orig.jpg')
+#
+# # Обычное изображение с гистограммой
+# create_image_with_histogram(
+#     image,
+#     "Гистограмма обычного изображения",
+#     'normal_image.jpg',
+#     'normal_histogram.jpg',
+#     'normal_with_histogram.jpg'
+# )
+#
+# # Перетемненное изображение с гистограммой
+# dark_image = cv2.convertScaleAbs(image, alpha=1, beta=-100)
+# create_image_with_histogram(
+#     dark_image,
+#     "Гистограмма перетемненного изображения",
+#     'dark_image.jpg',
+#     'dark_histogram.jpg',
+#     'dark_with_histogram.jpg'
+# )
+#
+# # Пересвеченное изображение с гистограммой
+# bright_image = cv2.convertScaleAbs(image, alpha=1, beta=100)
+# create_image_with_histogram(
+#     bright_image,
+#     "Гистограмма пересвеченного изображения",
+#     'bright_image.jpg',
+#     'bright_histogram.jpg',
+#     'bright_with_histogram.jpg'
+# )
+#
+# print("Готово! Сохранены изображения, гистограммы и объединенные результаты.")
+
+
+#
+# import cv2
+#
+# def classify_image_brightness(image):
+#     # Преобразование изображения в оттенки серого
+#     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#
+#     # Вычисление гистограммы
+#     hist = cv2.calcHist([gray_image], [0], None, [256], [0, 256])
+#
+#     # Нормализация гистограммы для получения распределения плотности
+#     hist /= hist.sum()
+#
+#     # Определение порогов для классификации
+#     dark_threshold = 0.6  # Порог для темных изображений
+#     bright_threshold = 0.6  # Порог для светлых изображений
+#
+#     # Суммирование плотностей в нижнем и верхнем диапазонах яркости
+#     dark_sum = hist[:70].sum()
+#     bright_sum = hist[180:].sum()
+#
+#     if dark_sum > dark_threshold:
+#         return "Темное изображение"
+#     elif bright_sum > bright_threshold:
+#         return "Пересвеченное изображение"
+#     else:
+#         return "Нормальное изображение"
+#
+# # Проверка классификации для всех созданных изображений
+#
+# # Обычное изображение
+# normal_image = cv2.imread('normal_image.jpg')
+# normal_classification = classify_image_brightness(normal_image)
+# print(f"Классификация обычного изображения: {normal_classification}")
+#
+# # Перетемненное изображение
+# dark_image = cv2.imread('dark_image.jpg')
+# dark_classification = classify_image_brightness(dark_image)
+# print(f"Классификация перетемненного изображения: {dark_classification}")
+#
+# # Пересвеченное изображение
+# bright_image = cv2.imread('bright_image.jpg')
+# bright_classification = classify_image_brightness(bright_image)
+# print(f"Классификация пересвеченного изображения: {bright_classification}")
+
+
+
+
+
+#
+# В результате работы скрипта получим следующее:
+#
+# Классификация обычного изображения: Нормальное изображение
+# Классификация перетемненного изображения: Темное изображение
+# Классификация пересвеченного изображения: Пересвеченное изображение
+# Однако, этот метод может не всегда оказаться оптимальным, для работы с освещенностью изображений можно использовать специальную цветовую модель - LAB.
+#
+# Цветовая модель LAB позволяет эффективно работать с изображениями, так как она ориентирована на человеческое восприятие цвета. В отличие от других цветовых моделей, таких как RGB или HSV, LAB позволяет изменять яркость и цветовые компоненты отдельно, что делает её идеальной для автоматической цветокоррекции и выравнивания освещенности на изображениях.
+#
+# Цветовое пространство LAB состоит из трёх компонентов:
+#
+# L* (Lightness) — яркость:
+# Компонент L* отвечает за восприятие яркости изображения и может принимать значения от 0 (абсолютная чернота) до 100 (абсолютная белизна).
+# a* — цветопередача от зелёного к красному:
+# Компонент a* измеряет цветовую информацию, варьируя от зелёного (отрицательные значения) до красного (положительные значения).
+# b* — цветопередача от синего к жёлтому:
+# Компонент b* измеряет цветовую информацию, варьируя от синего (отрицательные значения) до жёлтого (положительные значения).
+# Таким образом, в цветовой модели LAB цвет описывается с помощью трёх параметров: яркости и двух цветовых координат.
+#
+# Преимущества использования LAB
+# Близость к человеческому восприятию:
+#
+# В отличие от RGB, LAB стремится моделировать цвет так, как его воспринимает человеческий глаз. Это делает его особенно полезным для задач, связанных с автоматической коррекцией цвета, улучшением контраста и яркости.
+# Разделение яркости и цвета:
+#
+# В LAB цвет и яркость разделены, что позволяет изменять яркость (L*) изображения, не затрагивая его цветовые компоненты (a* и b*). Это особенно полезно при коррекции яркости и контраста.
+# Использование в стандартах:
+#
+# LAB используется как стандартное цветовое пространство в различных областях, таких как цифровая печать и цветовая коррекция в фотографии.
+# Применение LAB в обработке изображений
+
+# Применение LAB в обработке изображений
+# Определение темных или светлых изображений
+# import matplotlib
+#
+# matplotlib.use('Agg')  # Используем бэкенд без GUI
+# import cv2
+# import numpy as np
+# from matplotlib import pyplot as plt
+#
+#
+# def plot_lab_histogram(l_channel, title, filename):
+#     # Закрываем все предыдущие фигуры, если они открыты
+#     plt.close('all')
+#
+#     # Вычисление гистограммы для L-канала
+#     hist = cv2.calcHist([l_channel], [0], None, [256], [0, 256])
+#
+#     # Построение гистограммы
+#     plt.figure()
+#     plt.title(title)
+#     plt.xlabel("Яркость L-канала")
+#     plt.ylabel("Количество пикселей")
+#     plt.plot(hist)
+#     plt.xlim([0, 256])
+#
+#     # Сохранение гистограммы
+#     plt.savefig(filename)
+#     plt.close()
+#
+#
+# def classify_image_brightness_lab(image):
+#     # Преобразование изображения в цветовое пространство LAB
+#     lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+#
+#     # Извлечение L-канала (яркость)
+#     l_channel, a_channel, b_channel = cv2.split(lab_image)
+#
+#     # Вычисление гистограммы для L-канала
+#     hist = cv2.calcHist([l_channel], [0], None, [256], [0, 256])
+#
+#     # Нормализация гистограммы для получения распределения плотности
+#     hist /= hist.sum()
+#
+#     # Определение порогов для классификации
+#     dark_threshold = 0.6  # Порог для темных изображений
+#     bright_threshold = 0.6  # Порог для светлых изображений
+#
+#     # Суммирование плотностей в нижнем и верхнем диапазонах яркости L-канала
+#     dark_sum = hist[:70].sum()
+#     bright_sum = hist[180:].sum()
+#
+#     if dark_sum > dark_threshold:
+#         return "Темное изображение"
+#     elif bright_sum > bright_threshold:
+#         return "Пересвеченное изображение"
+#     else:
+#         return "Нормальное изображение"
+#
+#
+# def analyze_image_with_lab(image_path, image_type):
+#     # Загрузка изображения
+#     image = cv2.imread(image_path)
+#
+#     # Классификация изображения
+#     classification = classify_image_brightness_lab(image)
+#     print(f"Классификация {image_type} изображения (LAB): {classification}")
+#
+#     # Извлечение L-канала и построение его гистограммы
+#     lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+#     l_channel, a_channel, b_channel = cv2.split(lab_image)
+#
+#     # Построение и сохранение гистограммы L-канала
+#     hist_filename = f'{image_type}_lab_histogram.jpg'
+#     plot_lab_histogram(l_channel, f"Гистограмма L-канала для {image_type} изображения", hist_filename)
+#
+#     # Показать результат
+#     print(f"Гистограмма для {image_type} изображения сохранена как {hist_filename}")
+#
+#
+# # Анализ изображений с использованием LAB
+# analyze_image_with_lab('normal_image.jpg', 'обычного')
+# analyze_image_with_lab('dark_image.jpg', 'перетемненного')
+# analyze_image_with_lab('bright_image.jpg', 'пересвеченного')
+
+# Улучшение яркости и контраста
+# Поскольку яркость (L*) и цвет (a* и b*) в LAB разделены, можно легко улучшить яркость изображения, не затрагивая его цветовые характеристики. Вот пример кода для этого:
+#
+# import cv2
+#
+# image = cv2.imread('dark_image.jpg')
+#
+# # Преобразование изображения в цветовое пространство LAB
+# lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+#
+# # Разделение изображения на каналы L, a и b
+# l_channel, a_channel, b_channel = cv2.split(lab_image)
+#
+# # Применение выравнивания гистограммы к L-каналу
+# l_channel = cv2.equalizeHist(l_channel)
+#
+# # Слияние обработанных каналов обратно в изображение LAB
+# lab_image = cv2.merge((l_channel, a_channel, b_channel))
+#
+# # Преобразование обратно в BGR
+# result_image = cv2.cvtColor(lab_image, cv2.COLOR_LAB2BGR)
+#
+# # Сохранение результата
+# cv2.imwrite('corrected_image.jpg', result_image)
+#
+# Представленный метод позволяет в автоматическом режиме подредактировать яркость изображений:
+
+# Выравнивание освещения (CLAHE)
+# Метод адаптивного выравнивания гистограммы с ограничением контраста (CLAHE) часто используется для улучшения изображений с неравномерным освещением:
+#
+# import cv2
+#
+# image = cv2.imread('dark_image.jpg')
+#
+# # Преобразование изображения в цветовое пространство LAB
+# lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+#
+# # Разделение изображения на каналы L, a и b
+# l_channel, a_channel, b_channel = cv2.split(lab_image)
+#
+# # Применение CLAHE к L-каналу
+# clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+# l_channel_clahe = clahe.apply(l_channel)
+#
+# # Слияние обработанных каналов обратно в изображение LAB
+# lab_clahe_image = cv2.merge((l_channel_clahe, a_channel, b_channel))
+#
+# # Преобразование обратно в BGR
+# result_clahe_image = cv2.cvtColor(lab_clahe_image, cv2.COLOR_LAB2BGR)
+#
+# # Сохранение результата
+# cv2.imwrite('clahe_image.jpg', result_clahe_image)
